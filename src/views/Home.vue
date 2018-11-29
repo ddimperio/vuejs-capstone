@@ -1,18 +1,28 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>{{ message }}</h1>
   </div>
 </template>
 
+<style>
+</style>
+
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+var axios = require("axios");
 
 export default {
-  name: 'home',
-  components: {
-    HelloWorld
-  }
-}
+  data: function() {
+    return {
+      message: "Welcome to Vue.js!",
+      tasks: []
+    };
+  },
+  created: function() {
+     axios.get("http://localhost:3000/api/recipes").then(function(response) {
+      console.log(response.data);
+    });
+  },
+  methods: {},
+  computed: {}
+};
 </script>
