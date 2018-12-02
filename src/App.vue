@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">ToDoList</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -15,9 +15,9 @@
           Account
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="/#/login">Login</a>
-          <a class="dropdown-item" href="#">Logout</a>
           <a class="dropdown-item" href="/#/signup">Signup</a>
+          <a class="dropdown-item" href="/#/login">Login</a>
+          <a class="dropdown-item" href="/#/logout">Logout</a>
         </div>
       </li>
     </ul>
