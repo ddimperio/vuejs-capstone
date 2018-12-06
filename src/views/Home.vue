@@ -15,15 +15,22 @@
       </div>
     <div class="container">
       <h1 class="text-center"><u>Tasks:</u></h1>
-      <div v-for="task in tasks" class="card h-25 mt-3 shadow p-3 mb-5 bg-white rounded">
+      <div v-for="task in tasks" class="card mt-3 shadow p-3 mb-2 bg-white rounded w-50 p-3 text-center mx-auto">
           <div class="card-body">
-              <a class="text-right" href="#">
-              <img src="http://reverse.keepthetech.com/wp-content/uploads/2018/09/Cancel-Subscription.png" width="30" height="30" alt="">
-              </a>
+
+            <button v-on:click="deleteTask(task)" type="button" class="close text-danger" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div class="btn-group-vertical float-left">
+             <button type="button" class="btn btn-outline-dark mb-3">&#9650</button>
+             <button type="button" class="btn btn-outline-dark">&#9660</button>
+            </div>
+
             <h5 class="card-title">{{ task.task }}</h5>
              <p class="card-text">{{ "Notes:" + " " + task.notes }}</p>
             <p class="card-text"><small class="text-muted">{{ task.updated_at }}</small></p>
-            <div class="text-right">
+            <div class="text-center">
               Completed: 
               <input v-if="task.completed" type="checkbox" v-on:change="updateCompleted(task)" checked>
               <input v-else type="checkbox" v-on:change="updateCompleted(task)">
@@ -90,8 +97,21 @@ export default {
           console.log(response.data);
         }.bind(this)
       );
-    }
+    },
+     deleteTask: function(task) {
+      axios.delete('http://localhost:3000/api/tasks/' + task.id).then(
+        function(response) {
+          console.log(response.data);
+          var index = this.tasks.indexOf(task);
+          this.tasks.splice(index, 1);
+      }.bind(this)
+      );
+    }, 
   },  
   computed: {}
 };
 </script>
+
+<style>
+  
+</style>
