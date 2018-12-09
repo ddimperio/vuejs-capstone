@@ -1,89 +1,89 @@
 <template>
   <div class="home">
+
     <div class="mt-4 mb-4 text-center">
-        <ul>
-          <li v-for="error in errors" class="text-danger">{{error}}</li>
-        </ul>
         Task: <input v-model="newTask" type="text">
         Notes: <input v-model="newTaskNotes" type="text">
         Priority: <select v-model="newTaskPriority">
-                  <option disabled value="">Please select one</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                    <option disabled value="">Please select one</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
                   </select>
-        <button v-on:click="createTask()" class="btn btn-primary mt-2 ml-5">New Task</button>
-    </div> <!-- END TAG FOR NEW TASK BOXES -->
-
+      <button v-on:click="createTask()" class="btn btn-primary mt-2 ml-5">New Task</button>
+    </div>
     <div class="container">
       <h1 class="text-center"><u>Tasks:</u></h1>
-      <div v-for="task in tasks"  class="card mt-3 shadow p-3 mb-2 bg-white rounded w-50 p-3 text-center mx-auto">
-          <div class="card-body">
-
-            <button v-on:click="deleteTask(task)" type="button" class="close text-danger" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-
-            <div class="btn-group-vertical float-left">
-             <button type="button" class="btn btn-outline-dark mb-3">&#9650</button>
-             <button type="button" class="btn btn-outline-dark">&#9660</button>
-            </div>
-
-            <h5 class="card-title">{{ task.task }}</h5>
-            <h6>Priority: {{ task.priority }}</h6>
-             <p class="card-text">{{ "Notes:" + " " + task.notes }}</p>
-            <p class="card-text"><small class="text-muted">{{ task.updated_at }}</small></p>
-            <div class="text-center">
-              Completed: 
-              <input v-if="task.completed" type="checkbox" v-on:change="updateCompleted(task)" checked>
-              <input v-else type="checkbox" v-on:change="updateCompleted(task)">
-            </div>
-            <button v-on:click="setCurrentlyEditingTask(task)" type="button" class="btn btn-warning float-right btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
-              <!-- Modal -->
-              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle">Edit Task</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="mt-4 mb-4 mx-auto">
-                          Task: <input v-model="editTask" type="text"></br>
-                          Notes: <input v-model="editTaskNotes" type="text"></br>
-                          Priority: <select v-model="editTaskPriority">
-                                    <option disabled value="">Please select one</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    </select>
+      <draggable v-model="tasks">
+          <div v-for="task in tasks" class="card mt-3 shadow p-3 mb-2 bg-white rounded w-50 p-3 text-center mx-auto">
+            <div class="card-body">
+                <button v-on:click="deleteTask(task)" type="button" class="close text-danger" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="btn-group-vertical float-left">
+                 <button type="button" class="btn btn-outline-dark mb-3">&#9650</button>
+                 <button type="button" class="btn btn-outline-dark">&#9660</button>
+                </div>
+                <h5 class="card-title">{{ task.task }}</h5>
+                <h6>Priority: {{ task.priority }}</h6>
+                 <p class="card-text">{{ "Notes:" + " " + task.notes }}</p>
+                <p class="card-text"><small class="text-muted">{{ task.updated_at }}</small></p>
+                <div class="text-center">
+                  Completed: 
+                  <input v-if="task.completed" type="checkbox" v-on:change="updateCompleted(task)" checked>
+                  <input v-else type="checkbox" v-on:change="updateCompleted(task)">
+                </div>
+                <button v-on:click="setCurrentlyEditingTask(task)" type="button" class="btn btn-warning float-right btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
+                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalCenterTitle">Edit Task</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" v-on:click="updateTask()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                        <div class="modal-body">
+                          <div class="mt-4 mb-4 mx-auto">
+                              Task: <input v-model="editTask" type="text"></br>
+                              Notes: <input v-model="editTaskNotes" type="text"></br>
+                              Priority: <select v-model="editTaskPriority">
+                                        <option disabled value="">Please select one</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" v-on:click="updateTask()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
+            </div>
           </div>
-        </div>
-      </div>
+      </draggable>
     </div>
   </div>
 </template>
 
 <style></style>
 
+ 
 <script>
 var axios = require("axios");
+import draggable from 'vuedraggable'
+
 
 export default {
+    components: {
+        draggable,
+    },
   data: function() {
     return {
       tasks: [],
@@ -181,12 +181,12 @@ export default {
       }.bind(this)
       );
     }, 
+
   },  
   computed: {}
 };
+
+
 </script>
 
-<style>
-
-  
-</style>
+<style></style>
