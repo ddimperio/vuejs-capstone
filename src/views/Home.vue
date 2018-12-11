@@ -1,7 +1,7 @@
 <template>
   <div class="home">
 
-    <div class="mt-4 mb-4 text-center">
+    <div class="mb-4 text-center">
         Task: <input v-model="newTask" type="text">
         Notes: <input v-model="newTaskNotes" type="text">
         Priority: <select v-model="newTaskPriority">
@@ -16,16 +16,13 @@
     </div>
     <div class="container">
       <h1 class="text-center"><u>Tasks:</u></h1>
-      <draggable v-model="tasks">
+      <draggable v-model="tasks" v-on:end="endDrag">
           <div v-for="task in tasks" class="card mt-3 shadow p-3 mb-2 bg-white rounded w-50 p-3 text-center mx-auto">
             <div class="card-body">
                 <button v-on:click="deleteTask(task)" type="button" class="close text-danger" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
-                <div class="btn-group-vertical float-left">
-                 <button type="button" class="btn btn-outline-dark mb-3">&#9650</button>
-                 <button type="button" class="btn btn-outline-dark">&#9660</button>
-                </div>
+
                 <h5 class="card-title">{{ task.task }}</h5>
                 <h6>Priority: {{ task.priority }}</h6>
                  <p class="card-text">{{ "Notes:" + " " + task.notes }}</p>
@@ -172,7 +169,7 @@ export default {
         }.bind(this)
       );
     },
-     deleteTask: function(task) {
+    deleteTask: function(task) {
       axios.delete('http://localhost:3000/api/tasks/' + task.id).then(
         function(response) {
           console.log(response.data);
@@ -180,7 +177,19 @@ export default {
           this.tasks.splice(index, 1);
       }.bind(this)
       );
-    }, 
+    },
+    endDrag: function(event) {
+      console.log("endDrag", event);
+      this.tasks.forEach(task => {
+        console.log(task.task, task.priority)
+      })
+      var params = this.tasks;
+      axios.patch("http://localhost:3000/api/tasks/sort", params).then(response => {
+        console.log("Updated sort order", response.data);
+      })
+      // send a web request to the backend with the array of tasks
+      // the backend will update all priorities according to the given order
+    }
 
   },  
   computed: {}
@@ -189,4 +198,7 @@ export default {
 
 </script>
 
-<style></style>
+<style>
+
+
+</style>

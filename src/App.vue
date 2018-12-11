@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">
     ToDoList
     <img src="https://img.clipartxtras.com/15a393584dc436aeb415bccd83d5c64e_pencil-free-stock-photo-illustration-of-a-pencil-14223-pencil-clipart-no-background_800-800.png" width="30" height="30" class="d-inline-block align-top" alt="">
