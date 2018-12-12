@@ -1,23 +1,45 @@
 <template>
   <div class="home">
+      <h2 class="text-center text-uppercase text-secondary ">Tasks</h2>
+        <hr class="star-dark mb-5">
+        <!-- Button trigger modal -->
+        <button id="newbtn" type="button" class="btn btn-primary btn-lg mx-auto d-block" data-toggle="modal" data-target="#exampleModal">
+          New Task
+        </button>
 
-    <div class="mb-4 text-center">
-        Task: <input v-model="newTask" type="text">
-        Notes: <input v-model="newTaskNotes" type="text">
-        Priority: <select v-model="newTaskPriority">
-                    <option disabled value="">Please select one</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
-      <button v-on:click="createTask()" class="btn btn-primary mt-2 ml-5">New Task</button>
-    </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create New Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Task: <input v-model="newTask" type="text">
+                Notes: <input v-model="newTaskNotes" type="text">
+                Priority: <select v-model="newTaskPriority">
+                            <option disabled value="">Please select one</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select>
+              </div>
+              <div class="modal-footer">
+               <button type="button" v-on:click="createTask()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
     <div class="container">
-      <h1 class="text-center"><u>Tasks:</u></h1>
+
       <draggable v-model="tasks" v-on:end="endDrag">
-          <div v-for="task in tasks" class="card mt-3 shadow p-3 mb-2 bg-white rounded w-50 p-3 text-center mx-auto">
+          <div v-for="task in tasks" class="card mt-3 shadow p-3 mb-2 bg-white rounded w-50 p-3 border-secondary text-center mx-auto">
             <div class="card-body">
                 <button v-on:click="deleteTask(task)" type="button" class="close text-danger" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -44,8 +66,8 @@
                         </div>
                         <div class="modal-body">
                           <div class="mt-4 mb-4 mx-auto">
-                              Task: <input v-model="editTask" type="text"></br>
-                              Notes: <input v-model="editTaskNotes" type="text"></br>
+                              Task: <input v-model="editTask" type="text">
+                              Notes: <input v-model="editTaskNotes" type="text">
                               Priority: <select v-model="editTaskPriority">
                                         <option disabled value="">Please select one</option>
                                         <option>1</option>
@@ -199,6 +221,9 @@ export default {
 </script>
 
 <style>
-
+  
+  .home{
+    margin-top: 130px;
+  }
 
 </style>
