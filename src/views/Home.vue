@@ -100,7 +100,7 @@
 
             <button
               type="button"
-              v-on:click="slackOut();"
+              v-on:click="slackOut(task);"
               class="btn btn-dark float-left btn-sm btn-circle"
             >
               <img
@@ -179,13 +179,12 @@
 
 <script>
 var axios = require("axios");
-import draggable from 'vuedraggable'
-
+import draggable from "vuedraggable";
 
 export default {
-    components: {
-        draggable,
-    },
+  components: {
+    draggable
+  },
   data: function() {
     return {
       tasks: [],
@@ -216,20 +215,22 @@ export default {
         input_notes: this.newTaskNotes,
         input_priority: this.newTaskPriority
       };
-      axios.post("http://localhost:3000/api/tasks", params).then(
-        function(response) {
-          console.log(response);
-          this.tasks.push(response.data);
-          this.newTask = "";
-          this.newTaskNotes = "";
-          this.newTaskPriority = "";
-        }.bind(this)
-      )
-      .catch(
-        function(error) {
-          console.log(error.response);
-        }.bind(this)
-      );
+      axios
+        .post("http://localhost:3000/api/tasks", params)
+        .then(
+          function(response) {
+            console.log(response);
+            this.tasks.push(response.data);
+            this.newTask = "";
+            this.newTaskNotes = "";
+            this.newTaskPriority = "";
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.log(error.response);
+          }.bind(this)
+        );
     },
     setCurrentlyEditingTask: function(inputTask) {
       this.editId = inputTask.id;
@@ -245,26 +246,27 @@ export default {
         input_notes: this.editTaskNotes,
         input_priority: this.editTaskPriority
       };
-      axios.patch("http://localhost:3000/api/tasks/" + this.editId, params).then(
-        function(response) {
-          console.log(response);
-          // this.tasks.push(response.data);
-          this.editTask = "";
-          this.editTaskNotes = "";
-          this.editTaskPriority = "";
-        }.bind(this)
-      )
-      .catch(
-        function(error) {
-          console.log(error.response);
-        }.bind(this)
-      );
+      axios
+        .patch("http://localhost:3000/api/tasks/" + this.editId, params)
+        .then(
+          function(response) {
+            console.log(response);
+            // this.tasks.push(response.data);
+            this.editTask = "";
+            this.editTaskNotes = "";
+            this.editTaskPriority = "";
+          }.bind(this)
+        )
+        .catch(
+          function(error) {
+            console.log(error.response);
+          }.bind(this)
+        );
     },
-
 
     updateCompleted: function(task) {
       var params = {
-       input_completed: task.completed
+        input_completed: task.completed
       };
       console.log(params);
       axios.patch("http://localhost:3000/api/tasks/" + task.id, params).then(
@@ -275,34 +277,36 @@ export default {
       );
     },
     deleteTask: function(task) {
-      axios.delete('http://localhost:3000/api/tasks/' + task.id).then(
+      axios.delete("http://localhost:3000/api/tasks/" + task.id).then(
         function(response) {
           console.log(response.data);
           var index = this.tasks.indexOf(task);
           this.tasks.splice(index, 1);
-      }.bind(this)
+        }.bind(this)
       );
     },
     endDrag: function(event) {
       console.log("endDrag", event);
       this.tasks.forEach(task => {
-        console.log(task.task, task.priority)
-      })
+        console.log(task.task, task.priority);
+      });
       var params = this.tasks;
-      axios.patch("http://localhost:3000/api/tasks/sort", params).then(response => {
-        console.log("Updated sort order", response.data);
-      })
+      axios
+        .patch("http://localhost:3000/api/tasks/sort", params)
+        .then(response => {
+          console.log("Updated sort order", response.data);
+        });
       // send a web request to the backend with the array of tasks
       // the backend will update all priorities according to the given order
     },
-    slackOut: function(){
-      axios.post("https://hooks.slack.com/services/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").then(
-        function(response){
-          {"text": "Hello, world."}
-        }
-      );
+    slackOut: function(task) {
+      var params = {
+        'data': task
+      };
+      axios.post("http://localhost:3000/api/slack", params).then(function(response) {
+        console.log(response);
+      });
     }
-
   },
   computed: {}
 };
