@@ -1,91 +1,175 @@
 <template>
   <div class="home">
-      <h2 class="text-center text-uppercase text-secondary ">Tasks</h2>
-        <hr class="star-dark mb-5">
-        <!-- Button trigger modal -->
-        <button id="newbtn" type="button" class="btn btn-primary btn-lg mx-auto d-block" data-toggle="modal" data-target="#exampleModal">
-          New Task
-        </button>
+    <h2 class="text-center text-uppercase text-secondary mt-3">Tasks</h2>
+    <hr class="star-dark mb-5" />
+    <!-- Button trigger modal -->
+    <button
+      id="newbtn"
+      type="button"
+      class="btn btn-primary btn-lg mx-auto d-block"
+      data-toggle="modal"
+      data-target="#exampleModal"
+    >
+      New Task
+    </button>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create New Task</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                Task: <input v-model="newTask" type="text">
-                Notes: <input v-model="newTaskNotes" type="text">
-                Priority: <select v-model="newTaskPriority">
-                            <option disabled value="">Please select one</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                          </select>
-              </div>
-              <div class="modal-footer">
-               <button type="button" v-on:click="createTask()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Create New Task</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Task: <input v-model="newTask" type="text" /> Notes:
+            <input v-model="newTaskNotes" type="text" /> Priority:
+            <select v-model="newTaskPriority">
+              <option disabled value="">Please select one</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              v-on:click="createTask();"
+              class="btn btn-primary"
+              data-dismiss="modal"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <draggable v-model="tasks" v-on:end="endDrag">
+        <div
+          v-for="task in tasks"
+          class="card mt-3 shadow p-3 mb-5 bg-white rounded w-50 p-3 border-secondary text-center mx-auto"
+        >
+          <div class="card-body">
+            <button
+              v-on:click="deleteTask(task);"
+              type="button"
+              class="close text-danger"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            <h5 class="card-title">{{ task.task }}</h5>
+            <h6>Priority: {{ task.priority }}</h6>
+            <p class="card-text">{{ "Notes:" + " " + task.notes }}</p>
+            <p class="card-text">
+              <small class="text-muted">{{ task.updated_at }}</small>
+            </p>
+            <div class="text-center">
+              Completed:
+              <input
+                v-if="task.completed"
+                type="checkbox"
+                v-on:change="updateCompleted(task);"
+                checked
+              />
+              <input
+                v-else
+                type="checkbox"
+                v-on:change="updateCompleted(task);"
+              />
+            </div>
+
+            <button
+              type="button"
+              v-on:click="slackOut();"
+              class="btn btn-dark float-left btn-sm btn-circle"
+            >
+              <img
+                src="https://cdn.freebiesupply.com/logos/large/2x/slack-1-logo-png-transparent.png"
+                width="20"
+              />
+            </button>
+
+            <button
+              v-on:click="setCurrentlyEditingTask(task);"
+              type="button"
+              class="btn btn-warning float-right"
+              data-toggle="modal"
+              data-target="#exampleModalCenter"
+            >
+              Edit
+            </button>
+            <div
+              class="modal fade"
+              id="exampleModalCenter"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalCenterTitle"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">
+                      Edit Task
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="mt-4 mb-4 mx-auto">
+                      Task: <input v-model="editTask" type="text" /> Notes:
+                      <input v-model="editTaskNotes" type="text" /> Priority:
+                      <select v-model="editTaskPriority">
+                        <option disabled value="">Please select one</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      v-on:click="updateTask();"
+                      class="btn btn-primary"
+                      data-dismiss="modal"
+                    >
+                      Save changes
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-    <div class="container">
-
-      <draggable v-model="tasks" v-on:end="endDrag">
-          <div v-for="task in tasks" class="card mt-3 shadow p-3 mb-2 bg-white rounded w-50 p-3 border-secondary text-center mx-auto">
-            <div class="card-body">
-                <button v-on:click="deleteTask(task)" type="button" class="close text-danger" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-
-                <h5 class="card-title">{{ task.task }}</h5>
-                <h6>Priority: {{ task.priority }}</h6>
-                 <p class="card-text">{{ "Notes:" + " " + task.notes }}</p>
-                <p class="card-text"><small class="text-muted">{{ task.updated_at }}</small></p>
-                <div class="text-center">
-                  Completed: 
-                  <input v-if="task.completed" type="checkbox" v-on:change="updateCompleted(task)" checked>
-                  <input v-else type="checkbox" v-on:change="updateCompleted(task)">
-                </div>
-                <button v-on:click="setCurrentlyEditingTask(task)" type="button" class="btn btn-warning float-right btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
-                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalCenterTitle">Edit Task</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="mt-4 mb-4 mx-auto">
-                              Task: <input v-model="editTask" type="text">
-                              Notes: <input v-model="editTaskNotes" type="text">
-                              Priority: <select v-model="editTaskPriority">
-                                        <option disabled value="">Please select one</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                        </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" v-on:click="updateTask()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-            </div>
-          </div>
       </draggable>
     </div>
   </div>
@@ -93,7 +177,6 @@
 
 <style></style>
 
- 
 <script>
 var axios = require("axios");
 import draggable from 'vuedraggable'
@@ -211,19 +294,26 @@ export default {
       })
       // send a web request to the backend with the array of tasks
       // the backend will update all priorities according to the given order
+    },
+    slackOut: function(){
+      axios.post("https://hooks.slack.com/services/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").then(
+        function(response){
+          {"text": "Hello, world."}
+        }
+      );
     }
 
-  },  
+  },
   computed: {}
 };
-
-
 </script>
 
 <style>
-  
-  .home{
-    margin-top: 130px;
-  }
+.home {
+  padding-top: 120px;
+}
 
+.btn-circle {
+  border-radius: 50%;
+}
 </style>

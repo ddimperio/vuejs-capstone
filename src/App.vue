@@ -1,30 +1,67 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
-      <div class="container">
-       <a class="navbar-brand js-scroll-trigger" href="">
-          To Do List
-          <img src="https://img.clipartxtras.com/15a393584dc436aeb415bccd83d5c64e_pencil-free-stock-photo-illustration-of-a-pencil-14223-pencil-clipart-no-background_800-800.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        </a>
+    <div class="header">
+      <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
+        <div class="container">
+         <a class="navbar-brand js-scroll-trigger" href="">
+            To Do List
+            <!-- <img src="/pictures/pencil.png" width="30" height="30" class="d-inline-block align-top" alt=""> -->
+          </a>
 
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-              <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Account
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/#/signup">Signup</a>
-                        <a class="dropdown-item" href="/#/login">Login</a>
-                        <a class="dropdown-item" href="/#/logout">Logout</a>
-                      </div>
-              </li>
-          </ul>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                      <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <a class="dropdown-item" href="/#/signup">Signup</a>
+                          <a class="dropdown-item" href="/#/login">Login</a>
+                          <a class="dropdown-item" href="/#/logout">Logout</a>
+                        </div>
+                </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
 
     <router-view/>
+
+    <!-- Footer -->
+<!--     <footer class="footer text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-5 mb-lg-0">
+          </div>
+          <div class="col-md-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Around the Web</h4>
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="#">
+                  <i class="fab fa-fw fa-facebook-f"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="#">
+                  <i class="fab fa-fw fa-twitter"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="#">
+                  <i class="fab fa-fw fa-linkedin-in"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+          </div>
+        </div>
+      </div>
+    </footer> -->
   </div>
 </template>
 
