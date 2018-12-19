@@ -5,14 +5,11 @@
         <div class="container">
          <a class="navbar-brand js-scroll-trigger" href="">
             To Do List
-            <!-- <img src="/pictures/pencil.png" width="30" height="30" class="d-inline-block align-top" alt=""> -->
+            <img src="../images/pencil.png" width="30" height="30" class="d-inline-block align-top" alt="">
           </a>
 
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                      <a class="nav-link" href="#about">About</a>
-                </li>
                 <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Account
@@ -32,7 +29,7 @@
     <router-view/>
 
     <!-- Footer -->
-<!--     <footer class="footer text-center">
+    <footer class="footer text-center">
       <div class="container">
         <div class="row">
           <div class="col-md-4 mb-5 mb-lg-0">
@@ -51,7 +48,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="#">
+                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="www.linkedin.com/in/daviddimperio">
                   <i class="fab fa-fw fa-linkedin-in"></i>
                 </a>
               </li>
@@ -61,11 +58,17 @@
           </div>
         </div>
       </div>
-    </footer> -->
+    </footer>
   </div>
 </template>
 
 <style>
+
+footer {
+  width: 100%;
+}
+
+
 
 
 </style>

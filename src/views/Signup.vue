@@ -61,3 +61,14 @@ export default {
   }
 };
 </script>
+
+<style>
+  
+.signup {
+  padding-top: 120px;
+  background-image: url(../../images/memphis-colorful.png);
+  background-size: auto;
+  height: 100vh;
+}
+
+</style>

@@ -55,3 +55,14 @@ export default {
   }
 };
 </script>
+
+<style>
+  
+.login {
+  padding-top: 120px;
+  background-image: url(../../images/memphis-colorful.png);
+  background-size: auto;
+  height: 100vh;
+}
+
+</style>

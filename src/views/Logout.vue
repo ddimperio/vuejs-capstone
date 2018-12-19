@@ -14,3 +14,14 @@ export default {
   }
 };
 </script>
+
+<style>
+  
+.logout {
+  padding-top: 120px;
+  background-image: url(../../images/memphis-colorful.png);
+  background-size: auto;
+  height: 100vh;
+}
+
+</style>
