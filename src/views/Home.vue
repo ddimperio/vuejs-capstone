@@ -66,7 +66,7 @@
         <div class="container">
           <draggable v-model="tasks" v-on:end="endDrag">
             <div
-              v-for="task in tasks"
+              v-for="task in incompleteTasks"
               class="card mt-3 mb-5 bg-white rounded w-50 p-3 border-secondary text-center mx-auto"
             >
               <div class="card-body">
@@ -88,17 +88,11 @@
                 </p>
                 <div class="text-center">
                   Completed:
-                  <input
-                    v-if="task.completed"
+                  <!-- <input
                     type="checkbox"
                     v-on:change="updateCompleted(task);"
-                    checked
-                  />
-                  <input
-                    v-else
-                    type="checkbox"
-                    v-on:change="updateCompleted(task);"
-                  />
+                  /> -->
+                  <input type="checkbox" v-model="task.completed" v-on:change="updateCompleted(task)">
                 </div>
 
                 <button
@@ -179,6 +173,121 @@
       <div class="col">
         <h2 class="text-center text-uppercase text-secondary mt-3">Completed</h2>
         <hr class="star-dark mb-5" />
+        <div class="container" id="incompleteCards">
+          <draggable v-model="tasks" v-on:end="endDrag">
+            <div
+              v-for="task in completedTasks"
+              class="card mt-3 mb-5 bg-white rounded w-50 p-3 border-secondary text-center mx-auto" id="incomplete"
+            >
+              <div class="card-body">
+                <button
+                  v-on:click="deleteTask(task);"
+                  type="button"
+                  class="close text-danger"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h5 class="card-title">{{ task.task }}</h5>
+                <!-- <h6>Priority: {{ task.priority }}</h6> -->
+                <p class="card-text">{{ "Notes:" + " " + task.notes }}</p>
+
+                <p class="card-text">
+                  <small class="text-muted">{{ task.updated_at }}</small>
+                </p>
+                <div class="text-center">
+                  Completed:
+                  <input type="checkbox" v-model="task.completed" v-on:change="updateCompleted(task)">
+                  <!-- <input
+                    v-if="task.completed"
+                    type="checkbox"
+                    v-on:change="updateCompleted(task);"
+                    checked
+                  />
+                  <input
+                    v-else
+                    type="checkbox"
+                    v-on:change="updateCompleted(task);"
+                  /> -->
+                </div>
+
+                <button
+                  type="button"
+                  v-on:click="slackOut(task);"
+                  class="btn btn-link float-left btn-sm btn-circle"
+                >
+                  <img
+                    src="https://cdn-images-1.medium.com/max/1200/1*HbLMI2zIy5y39RZ4lA_RPg.png"
+                    width="30"
+                  />
+                </button>
+
+                <button
+                  v-on:click="setCurrentlyEditingTask(task);"
+                  type="button"
+                  class="btn btn-warning float-right"
+                  data-toggle="modal"
+                  data-target="#exampleModalCenter"
+                >
+                  Edit
+                </button>
+                <div
+                  class="modal fade"
+                  id="exampleModalCenter"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalCenterTitle"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">
+                          Edit Task
+                        </h5>
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mt-4 mb-4 mx-auto">
+                          Task: <br><input v-model="editTask" type="text" /> <br>
+                          Notes: <br><input v-model="editTaskNotes" type="text" />
+    <!--                       <select v-model="editTaskPriority">
+                            <option disabled value="">Please select one</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                          </select> -->
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          v-on:click="updateTask();"
+                          class="btn btn-primary"
+                          data-dismiss="modal"
+                        >
+                          Save changes
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </draggable>
+        </div>
+
+
       </div> 
     </div>
   </div>
@@ -216,6 +325,8 @@ export default {
   },
   data: function() {
     return {
+      // incompleteTasks: [],
+      // completedTasks: [],
       tasks: [],
       newTask: "",
       newTaskNotes: "",
@@ -233,7 +344,8 @@ export default {
         console.log(response.data);
         this.tasks = response.data;
 
-        this.tasks = this.tasks.filter(task => task.completed == false );
+        // this.incompleteTasks = this.tasks.filter(task => task.completed == false );
+        // this.completedTasks = this.tasks.filter(task => task.completed == true );
       }.bind(this)
     );
   },
@@ -306,19 +418,25 @@ export default {
     },
 
     updateCompleted: function(task) {
+      var self = this;
       var params = {
-        input_completed: task.completed
+        input_completed: !task.completed
       };
       console.log(params);
       axios.patch("http://localhost:3000/api/tasks/" + task.id, params).then(
         function(response) {
+          console.log(response);
+
+          // var index = self.incompleteTasks.indexOf(task);
+          // task.completed = true;
+          // self.completedTasks.push(task);
           
 
+          // self.incompleteTasks.splice(index, 1);
+
+          
         }.bind(this)
-      ).catch(function(error) {
-          console.log(error.response.data.errors);
-          this.errors = error.response.data.errors;
-      });
+      );
     },
     deleteTask: function(task) {
       axios.delete("http://localhost:3000/api/tasks/" + task.id).then(
@@ -353,7 +471,14 @@ export default {
       });
     }
   },
-  computed: {}
+  computed: {
+    incompleteTasks: function() {
+      return this.tasks.filter(task => task.completed == false );
+    },
+    completedTasks: function() {
+      return this.tasks.filter(task => task.completed == true );
+    }
+  }
 };
 </script>
 
@@ -362,7 +487,6 @@ export default {
   padding-top: 120px;
   background-image: url(../../images/memphis-colorful.png);
   background-size: auto;
-  height: 200vh;
 }
 
 .btn-circle {
@@ -374,6 +498,14 @@ export default {
 
 .card-body {
   color: #2B3E50;
+}
+
+#incomplete {
+  text-decoration: line-through;
+}
+
+#incompleteCards {
+  margin-top: 120px;
 }
 
 body {margin:2rem;}
